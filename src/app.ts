@@ -9,7 +9,7 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: 'https://periwinkle-panther-tam.cyclic.app', // Replace with your allowed origin
+    origin: '*', // Replace with your allowed origin
     methods: 'GET,POST,PUT,DELETE,PATCH',
     credentials: true, // Set to true if your request includes credentials
   })
