@@ -81,7 +81,7 @@ model Shopper {
   mobileNumber        String
   picture             Json[]
   shopName            String
-  shopeId             String   @unique
+  shopeId             String
   tradeLicense        String
   tradeLicensePicture Json[]
   ward                String

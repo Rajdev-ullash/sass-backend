@@ -23,8 +23,8 @@ router.post(
 );
 router.post(
   '/create-shopper',
-  // validateRequest(UserValidation.createAdmin),
   configureShopperImagesUpload(),
+  validateRequest(UserValidation.createShopper),
   UserController.createShopper
 );
 

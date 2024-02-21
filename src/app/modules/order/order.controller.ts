@@ -9,7 +9,7 @@ import { orderFilterableFields } from './order.constants';
 import { OrderService } from './order.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-  console.log(req.body);
+  // console.log(req.body);
   const result = await OrderService.insertIntoDB(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,

@@ -104,9 +104,42 @@ const createAdmin = z.object({
     }),
   }),
 });
+const createShopper = z.object({
+  body: z.object({
+    password: z.string({
+      required_error: 'Password is required',
+    }),
+    email: z
+      .string({
+        required_error: 'Email is required',
+      })
+      .refine(value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), {
+        message: 'Invalid email format',
+      }),
+    ward: z.string({
+      required_error: 'Ward is required',
+    }),
+    address: z.string({
+      required_error: 'Address is required',
+    }),
+    mobileNumber: z.string({
+      required_error: 'Mobile Number is required',
+    }),
+    // .refine(value => isValidBangladeshiMobileNumber(value.toString()), {
+    //   message: 'Invalid Bangladeshi mobile number format',
+    // }),
+    shopName: z.string({
+      required_error: 'Shop Name is required',
+    }),
+    tradeLicense: z.string({
+      required_error: 'Trade License is required',
+    }),
+  }),
+});
 
 export const UserValidation = {
   createBuyer,
   createMerchant,
   createAdmin,
+  createShopper,
 };

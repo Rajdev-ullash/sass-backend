@@ -472,8 +472,9 @@ const createShopper = async (
   shopper: Shopper,
   user: User
 ): Promise<User | null> => {
-  console.log(`shopper: ${shopper}`);
-  console.log(`user: ${user}`);
+  //User | null
+  // console.log(`shopper: ${shopper}`);
+  // console.log(`user: ${user}`);
   // set role
   user.role = 'shopper';
 
@@ -482,6 +483,7 @@ const createShopper = async (
       email: shopper.email,
     },
   });
+  // console.log(isEmailExist);
 
   if (isEmailExist) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'This email already exists');
@@ -566,16 +568,16 @@ const createShopper = async (
     Number(config.bycrypt_salt_rounds)
   );
   const id = await generateShopperId();
-  console.log(`shopper id: ${id}`);
+  // console.log(`shopper id: ${id}`);
   const picture = await uploadToCloudinary(
     shopper.picture as unknown as CloudinaryUploadFile[]
   );
-  console.log(`shopper picture: ${picture}`);
+  // console.log(`shopper picture: ${picture}`);
   const tradeLicensePicture = await uploadToCloudinary(
     shopper.tradeLicensePicture as unknown as CloudinaryUploadFile[]
   );
 
-  console.log(`trade license picture: ${tradeLicensePicture}`);
+  // console.log(`trade license picture: ${tradeLicensePicture}`);
 
   const data = await prisma.$transaction(async transactionClient => {
     const shoppers = await transactionClient.shopper.create({
@@ -607,56 +609,56 @@ const createShopper = async (
       throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
 
-    // let OTPCode = Math.floor(100000 + Math.random() * 900000);
-    // const createNewOtp = await transactionClient.otp.create({
-    //   data: {
-    //     mobileNumber: buyer.mobileNumber,
-    //     otp: OTPCode,
-    //   },
-    // });
-    //VAc5ba462e6fd12da96ec2b461d7339c3e
-    // const verificationCheck = await client.verify.v2
-    //   .services('VAc5ba462e6fd12da96ec2b461d7339c3e')
-    //   .verificationChecks.create({
-    //     to: `+88${buyer.mobileNumber}`, // Ensure mobileNumber is in E.164 format
-    //     code: OTPCode.toString(), // Ensure OTPCode is a string
-    //   });
+    //   // let OTPCode = Math.floor(100000 + Math.random() * 900000);
+    //   // const createNewOtp = await transactionClient.otp.create({
+    //   //   data: {
+    //   //     mobileNumber: buyer.mobileNumber,
+    //   //     otp: OTPCode,
+    //   //   },
+    //   // });
+    //   //VAc5ba462e6fd12da96ec2b461d7339c3e
+    //   // const verificationCheck = await client.verify.v2
+    //   //   .services('VAc5ba462e6fd12da96ec2b461d7339c3e')
+    //   //   .verificationChecks.create({
+    //   //     to: `+88${buyer.mobileNumber}`, // Ensure mobileNumber is in E.164 format
+    //   //     code: OTPCode.toString(), // Ensure OTPCode is a string
+    //   //   });
 
-    // console.log(verificationCheck.status);
-    // const verificationCheck = await (client.verify.v2
-    //   .services('VAc5ba462e6fd12da96ec2b461d7339c3e')
-    //   .verificationChecks.create({
-    //     to: `+88${buyer.mobileNumber}`,
-    //     code: OTPCode.toString(),
-    //   }) as Promise<VerificationCheckInstance>);
+    //   // console.log(verificationCheck.status);
+    //   // const verificationCheck = await (client.verify.v2
+    //   //   .services('VAc5ba462e6fd12da96ec2b461d7339c3e')
+    //   //   .verificationChecks.create({
+    //   //     to: `+88${buyer.mobileNumber}`,
+    //   //     code: OTPCode.toString(),
+    //   //   }) as Promise<VerificationCheckInstance>);
 
-    // console.log(verificationCheck.status);
+    //   // console.log(verificationCheck.status);
 
-    // If the verification check is successful, you can send an SMS
+    //   // If the verification check is successful, you can send an SMS
 
-    // const message = await (client.messages.create({
-    //   body: `Your verification Code is ${OTPCode}`,
-    //   from: '+8801644836367', // Replace with your Twilio phone number
-    //   to: `+88${buyer.mobileNumber}`,
-    // }) as Promise<MessageInstance>);
+    //   // const message = await (client.messages.create({
+    //   //   body: `Your verification Code is ${OTPCode}`,
+    //   //   from: '+8801644836367', // Replace with your Twilio phone number
+    //   //   to: `+88${buyer.mobileNumber}`,
+    //   // }) as Promise<MessageInstance>);
 
-    // console.log(message); // Log the SID of the sent SMS
+    //   // console.log(message); // Log the SID of the sent SMS
 
-    // var params = {
-    //   template: `Your verification Code is %token`,
-    //   timeout: 5000,
-    // };
+    //   // var params = {
+    //   //   template: `Your verification Code is %token`,
+    //   //   timeout: 5000,
+    //   // };
 
-    // messagebird.verify.create(
-    //   `+88${buyer.mobileNumber}`,
-    //   params,
-    //   function (err, response) {
-    //     if (err) {
-    //       return console.log('OTP Sending failed', err);
-    //     }
-    //     console.log(response);
-    //   }
-    // );
+    //   // messagebird.verify.create(
+    //   //   `+88${buyer.mobileNumber}`,
+    //   //   params,
+    //   //   function (err, response) {
+    //   //     if (err) {
+    //   //       return console.log('OTP Sending failed', err);
+    //   //     }
+    //   //     console.log(response);
+    //   //   }
+    //   // );
 
     return createNewUser;
   });
