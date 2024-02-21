@@ -32,4 +32,4 @@ router.delete(
   OperationalCostManagementController.deleteByIdFromDB
 );
 
-export const categoryRoutes = router;
+export const OperationalCostManagementRoutes = router;

@@ -4,6 +4,7 @@ import { brandRoutes } from '../modules/brand/brand.routes';
 import { categoryRoutes } from '../modules/category/category.routes';
 // import { paymentRoutes } from '../modules/payment/payment.routes';
 import { EmployeeRoutes } from '../modules/employee/employee.routes';
+import { OperationalCostManagementRoutes } from '../modules/operationalCostManagement/operationalCostManagement.routes';
 import { orderRoutes } from '../modules/order/order.routes';
 import { PaymentRoutes } from '../modules/payment/payment.routes';
 import { productRoutes } from '../modules/product/product.routes';
@@ -49,6 +50,10 @@ const moduleRoutes = [
   {
     path: '/employees',
     route: EmployeeRoutes,
+  },
+  {
+    path: '/operationalCostManagements',
+    route: OperationalCostManagementRoutes,
   },
 ];
 
