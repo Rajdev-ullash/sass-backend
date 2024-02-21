@@ -20,7 +20,13 @@ const insertIntoDB = async (data: OrderInput): Promise<Order> => {
     data.orderItems.map(item =>
       prisma.product
         .findUnique({ where: { id: item.productId } })
-        .then(product => product?.price)
+        .then(product => {
+          if (product?.afterDiscountPrice && product.afterDiscountPrice !== 0) {
+            return product.afterDiscountPrice;
+          } else {
+            return product?.price;
+          }
+        })
     )
   );
 
@@ -48,7 +54,7 @@ const insertIntoDB = async (data: OrderInput): Promise<Order> => {
       totalAmount: expectedTotalAmount,
       orderItems: {
         create: data.orderItems.map(item => ({
-          quantity: item.quantity, // Ensure quantity is included
+          quantity: item.quantity,
           product: {
             connect: { id: item.productId },
           },

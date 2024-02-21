@@ -49,6 +49,7 @@ const createShopper = catchAsync(async (req: Request, res: Response) => {
     ward,
   } = req.body;
   // console.log(shopper);
+  console.log(req.files);
 
   const shopper: any = {
     email: email,
