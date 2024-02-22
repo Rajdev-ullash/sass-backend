@@ -101,9 +101,6 @@ const getAllFromDB = async (
     andConditions.length > 0 ? { AND: andConditions } : {};
 
   const result = await prisma.employee.findMany({
-    include: {
-      zone: true,
-    },
     where: whereConditions,
     skip,
     take: limit,
