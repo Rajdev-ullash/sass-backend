@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "employees" ALTER COLUMN "joiningDate" DROP NOT NULL,
-ALTER COLUMN "joiningDate" SET DEFAULT CURRENT_TIMESTAMP;

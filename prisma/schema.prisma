@@ -75,7 +75,7 @@ model Merchant {
 }
 
 model Shopper {
-  id                  String   @id @default(uuid())
+  id                  String    @id @default(uuid())
   email               String
   address             String
   mobileNumber        String
@@ -85,11 +85,12 @@ model Shopper {
   tradeLicense        String
   tradeLicensePicture Json[]
   ward                String
-  isVerified          Boolean  @default(false)
-  isBlocked           Boolean  @default(false)
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @default(now())
+  isVerified          Boolean   @default(false)
+  isBlocked           Boolean   @default(false)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @default(now())
   users               User[]
+  products            Product[]
 
   @@map("shoppers")
 }
@@ -159,6 +160,8 @@ model Product {
   orderItems         OrderItem[]
   order              Order?      @relation(fields: [orderId], references: [id])
   orderId            String?
+  shopper            Shopper     @relation(fields: [shopperId], references: [id])
+  shopperId          String
 
   @@map("products")
 }
@@ -266,6 +269,9 @@ model AssignOrderToDP {
 }
 
 enum OrderStatus {
+  ASSIGNING
+  ACCEPTED
+  RECIEVED
   PENDING
   CONFIRMED
   SHIPPED
