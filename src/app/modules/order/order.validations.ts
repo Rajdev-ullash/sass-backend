@@ -42,7 +42,14 @@ const update = z.object({
     paymentId: z.string().optional(),
     isCashOnDelivery: z.boolean().optional(),
     status: z
-      .enum(['PENDING', 'PAID', 'SHIPPED', 'DELIVERED', 'CANCELLED'])
+      .enum([
+        'PENDING',
+        'PAID',
+        'INPROGRESS',
+        'SHIPPED',
+        'DELIVERED',
+        'CANCELLED',
+      ])
       .optional(),
   }),
 });

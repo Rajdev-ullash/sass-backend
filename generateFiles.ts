@@ -67,5 +67,5 @@ console.log(
   `Folder '${folderName}' and files created successfully in 'src/app/modules'.`
 );
 
-// command : node generateFiles.js FolderName FileName
+// command : node generateFiles.ts assignOrderToDP assignOrderToDP
 // Example : node generateFiles.js Student student

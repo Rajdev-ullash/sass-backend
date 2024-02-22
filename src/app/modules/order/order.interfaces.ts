@@ -32,6 +32,7 @@ export type JsonNullableListFilter = {
 export type OrderStatus =
   | 'PENDING'
   | 'CONFIRMED'
+  | 'INPROGRESS'
   | 'SHIPPED'
   | 'DELIVERED'
   | 'CANCELED';

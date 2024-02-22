@@ -19,6 +19,7 @@ export const orderStatusOptions: string[] = [
   'PENDING',
   'CONFIRMED',
   'SHIPPED',
+  'INPROGRESS',
   'DELIVERED',
   'CANCELED',
 ];

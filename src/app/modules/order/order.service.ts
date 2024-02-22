@@ -1,5 +1,5 @@
 import { OrderStatus, Prisma } from '@prisma/client';
-// import { OrderWhereInput } from './order.interfaces';
+// import { OrderWhereInput, OrderStatus } from './order.interfaces';
 // Your service code here
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Your service code for orders here
@@ -136,6 +136,11 @@ const getAllFromDB = async (
       orderItems: {
         include: {
           product: true, // Include product details for each order item
+        },
+      },
+      user: {
+        include: {
+          buyer: true,
         },
       },
     },
