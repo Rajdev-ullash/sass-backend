@@ -45,6 +45,7 @@ function convertObject(inputObject) {
       calculateAfterDiscountPrice(inputObject.price, inputObject.discount)
     ),
     orderId: null,
+    shopperId: '362ade5c-a095-4dde-be8a-e3be3b5e0184',
   };
 
   // Additional optional properties:

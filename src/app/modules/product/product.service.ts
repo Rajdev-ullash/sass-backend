@@ -81,6 +81,7 @@ const insertIntoDB = async (data: ProductInput): Promise<Product> => {
         : [data.productTags],
       discount: Number(discount),
       afterDiscountPrice: afterDiscountPrice,
+      user: { connect: { id: Number(data.userId) } },
     },
   });
   // console.log(result);

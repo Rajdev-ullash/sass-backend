@@ -11,9 +11,10 @@ import { ProductService } from './product.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
   // Insert into the database using your ProductService
-
+  const userId = req?.user?.userId;
   const data: ProductInput = {
     ...req.body,
+    userId: userId,
     productImages: req.files as CloudinaryUploadFile[], // Assuming req.files is of type File[] or undefined
   };
 

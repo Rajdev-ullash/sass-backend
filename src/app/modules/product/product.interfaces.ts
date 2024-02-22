@@ -24,6 +24,7 @@ export type ProductInput = {
   productTags: string[];
   discount: number | undefined;
   afterDiscountPrice: number | undefined;
+  userId: number;
 };
 
 export type ProductWhereInput = {
