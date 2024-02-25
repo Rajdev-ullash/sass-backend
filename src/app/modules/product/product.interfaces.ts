@@ -25,6 +25,7 @@ export type ProductInput = {
   discount: number | undefined;
   afterDiscountPrice: number | undefined;
   userId: number;
+  vat: number | undefined;
 };
 
 export type ProductWhereInput = {

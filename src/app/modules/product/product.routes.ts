@@ -5,6 +5,8 @@ import express from 'express';
 // import validateRequest from '../../middlewares/validateRequest';
 // import multer from 'multer';
 
+import { ENUM_USER_ROLE } from '../../../enums/user';
+import auth from '../../middlewares/auth';
 import { ProductController } from './product.controller';
 import {
   configureProductFileUpload,
@@ -25,7 +27,12 @@ router.post(
   configureProductImagesUpload(),
 
   //   validateRequest(RoomValidation.create),
-  //   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SHOPPER,
+    ENUM_USER_ROLE.MERCHANT
+  ),
   ProductController.insertIntoDB
 );
 router.post(
@@ -33,7 +40,12 @@ router.post(
   configureProductFileUpload(),
 
   //   validateRequest(RoomValidation.create),
-  //   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SHOPPER,
+    ENUM_USER_ROLE.MERCHANT
+  ),
   ProductController.insertExcelIntoDB
 );
 

@@ -30,9 +30,11 @@ const insertExcelIntoDB = catchAsync(async (req: Request, res: Response) => {
   // Insert into the database using your ProductService
 
   const fileInfo = req?.file;
+  const userId = req?.user?.userId;
+
   // console.log(fileInfo);
 
-  const result = await ProductService.insertExcelIntoDB(fileInfo);
+  const result = await ProductService.insertExcelIntoDB(fileInfo, userId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

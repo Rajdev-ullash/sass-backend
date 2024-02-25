@@ -162,6 +162,8 @@ model Product {
   orderId            String?
   user               User?       @relation(fields: [userId], references: [id])
   userId             Int?
+  vat                Int
+  totalPrice         Int?
 
   @@map("products")
 }
@@ -255,15 +257,23 @@ model OperationalCostManagement {
 }
 
 model AssignOrderToDP {
-  id                     String    @id @default(uuid())
-  order                  Order     @relation(fields: [orderId], references: [id])
-  orderId                String
-  employee               Employee  @relation(fields: [employeeId], references: [id])
-  employeeId             String
-  deliveryTimeCommitted  Int
-  deliveryCompletionTime String?
-  createdAt              DateTime? @default(now())
-  updatedAt              DateTime? @updatedAt
+  id                                 String    @id @default(uuid())
+  order                              Order     @relation(fields: [orderId], references: [id])
+  orderId                            String
+  employee                           Employee  @relation(fields: [employeeId], references: [id])
+  employeeId                         String
+  deliveryTimeCommitted              Int
+  deliveryCompletionTime             String?
+  orderTime                          String?
+  assigningTime                      String?
+  inProgressTime                     String?
+  orderInProgressMinutes             String?
+  orderReceivedTime                  String?
+  orderDeliveredTime                 String?
+  deliveryDurationFromRecieveMinutes String?
+  orderExcutionTimeMinutes           String?
+  createdAt                          DateTime? @default(now())
+  updatedAt                          DateTime? @updatedAt
 
   @@map("assign_order_to_dps")
 }
@@ -271,7 +281,7 @@ model AssignOrderToDP {
 enum OrderStatus {
   ASSIGNING
   ACCEPTED
-  RECIEVED
+  RECEIVED
   PENDING
   CONFIRMED
   SHIPPED

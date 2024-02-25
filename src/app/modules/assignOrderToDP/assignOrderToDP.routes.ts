@@ -10,6 +10,14 @@ import { AssignOrderToDPValidation } from './assignOrderToDP.validations';
 
 const router = express.Router();
 router.get('/getAllInfoFromDB', AssignOrderToDPController.getAllInfoFromDB);
+router.get(
+  '/getDeliveryReportsInfoFromDB',
+  AssignOrderToDPController.getDeliveryReportsInfoFromDB
+);
+router.get(
+  '/getMonitoryReportsInfoFromDB',
+  AssignOrderToDPController.getMonitoryReportsInfoFromDB
+);
 router.get('/', AssignOrderToDPController.getAllFromDB);
 router.get('/:id', AssignOrderToDPController.getByIdFromDB);
 

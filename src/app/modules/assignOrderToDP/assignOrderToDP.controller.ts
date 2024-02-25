@@ -82,6 +82,40 @@ const getAllInfoFromDB = catchAsync(async (req: Request, res: Response) => {
     data: result.data,
   });
 });
+const getDeliveryReportsInfoFromDB = catchAsync(
+  async (req: Request, res: Response) => {
+    const filters = pick(req.query, assignOrderToDPFilterableFields);
+    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+    const result = await AssignOrderToDPService.getDeliveryReportsInfoFromDB(
+      filters,
+      options
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'fetched successfully',
+      meta: result.meta,
+      data: result.data,
+    });
+  }
+);
+const getMonitoryReportsInfoFromDB = catchAsync(
+  async (req: Request, res: Response) => {
+    const filters = pick(req.query, assignOrderToDPFilterableFields);
+    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+    const result = await AssignOrderToDPService.getMonitoryReportsInfoFromDB(
+      filters,
+      options
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'fetched successfully',
+      meta: result.meta,
+      data: result.data,
+    });
+  }
+);
 
 export const AssignOrderToDPController = {
   insertIntoDB,
@@ -90,4 +124,6 @@ export const AssignOrderToDPController = {
   getByIdFromDB,
   deleteByIdFromDB,
   getAllInfoFromDB,
+  getDeliveryReportsInfoFromDB,
+  getMonitoryReportsInfoFromDB,
 };

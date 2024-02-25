@@ -27,7 +27,7 @@ import {
 import csvtojsonV2 from 'csvtojson';
 const insertIntoDB = async (data: ProductInput): Promise<Product> => {
   const { title, price, discount } = data;
-  console.log(data);
+  // console.log(data);
   const baseSlug = slugify(title, { lower: true });
   // Check if the base slug already exists in the database
   let existingProduct = await prisma.product.findFirst({
@@ -66,6 +66,15 @@ const insertIntoDB = async (data: ProductInput): Promise<Product> => {
     afterDiscountPrice = Number(price) - discountedAmount;
   }
 
+  let totalPrice: number | undefined;
+
+  if (afterDiscountPrice !== undefined) {
+    // Simplified condition
+    totalPrice = afterDiscountPrice + Number(data.vat);
+  } else {
+    totalPrice = Number(data.price) + Number(data.vat);
+  }
+
   const result = await prisma.product.create({
     data: {
       title: data.title,
@@ -82,6 +91,8 @@ const insertIntoDB = async (data: ProductInput): Promise<Product> => {
       discount: Number(discount),
       afterDiscountPrice: afterDiscountPrice,
       user: { connect: { id: Number(data.userId) } },
+      vat: Number(data.vat),
+      totalPrice: totalPrice,
     },
   });
   // console.log(result);
@@ -93,7 +104,7 @@ const insertIntoDB = async (data: ProductInput): Promise<Product> => {
   return result;
 };
 
-const insertExcelIntoDB = async (data: any) => {
+const insertExcelIntoDB = async (data: any, userId: any) => {
   const fileInfo = await uploadFileToCloudinary(data);
 
   // Download the file from Cloudinary
@@ -106,11 +117,18 @@ const insertExcelIntoDB = async (data: any) => {
 
   // Convert the CSV buffer to JSON using csvtojson
   const jsonArray = await csvtojsonV2().fromString(buffer.toString());
-
+  let totalPrice = 0;
   // Map through the jsonArray
   const formattedJsonArray = await Promise.all(
     jsonArray.map(async (item: any) => {
-      console.log(item.categoryId);
+      const { afterDiscountPrice, price, vat } = item;
+
+      if (afterDiscountPrice !== undefined) {
+        totalPrice = Number(afterDiscountPrice) + Number(vat);
+      } else {
+        totalPrice = Number(price) + Number(vat);
+      }
+      // console.log(item.categoryId);
       const productImages = JSON.parse(item.productImages || '[]');
       // ... Other transformations
       const baseSlug = slugify(item.title, { lower: true });
@@ -155,6 +173,9 @@ const insertExcelIntoDB = async (data: any) => {
         discount: Number(parseInt(item.discount)),
         afterDiscountPrice: Number(parseInt(item.afterDiscountPrice)),
         orderId: null,
+        userId: Number(userId),
+        vat: Number(parseInt(item.vat)),
+        totalPrice: Number(totalPrice),
       };
     })
   );
@@ -329,6 +350,7 @@ const updateOneInDB = async (
       ...data,
       price: Number(price),
       afterDiscountPrice: Number(afterDiscountPrice),
+      vat: Number(data.vat),
     },
     include: {
       category: true,
@@ -357,6 +379,3 @@ export const ProductService = {
   deleteByIdFromDB,
   insertExcelIntoDB,
 };
-function csv() {
-  throw new Error('Function not implemented.');
-}
