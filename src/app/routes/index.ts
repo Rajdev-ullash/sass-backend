@@ -4,6 +4,7 @@ import { brandRoutes } from '../modules/brand/brand.routes';
 import { categoryRoutes } from '../modules/category/category.routes';
 // import { paymentRoutes } from '../modules/payment/payment.routes';
 import { AssignOrderToDPRoutes } from '../modules/assignOrderToDP/assignOrderToDP.routes';
+import { DeliveryChargeRoutes } from '../modules/deliveryCharge/deliveryCharge.routes';
 import { EmployeeRoutes } from '../modules/employee/employee.routes';
 import { OperationalCostManagementRoutes } from '../modules/operationalCostManagement/operationalCostManagement.routes';
 import { orderRoutes } from '../modules/order/order.routes';
@@ -59,6 +60,10 @@ const moduleRoutes = [
   {
     path: '/assignOrderToDPs',
     route: AssignOrderToDPRoutes,
+  },
+  {
+    path: '/deliveryChargesAdd',
+    route: DeliveryChargeRoutes,
   },
 ];
 

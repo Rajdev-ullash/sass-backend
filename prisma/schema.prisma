@@ -194,6 +194,7 @@ model Order {
   updatedAt        DateTime          @default(now())
   products         Product[]
   assignOrderToDPs AssignOrderToDP[]
+  platformCharge   Int?
 
   @@map("orders")
 }
@@ -276,6 +277,38 @@ model AssignOrderToDP {
   updatedAt                          DateTime? @updatedAt
 
   @@map("assign_order_to_dps")
+}
+
+model DeliveryChargeMappingBase {
+  id               Int               @id @default(autoincrement())
+  name             String            @unique
+  flatCharge       Int?
+  orderCostSlabs   OrderCostSlab[]
+  orderVolumeSlabs OrderVolumeSlab[]
+  createdAt        DateTime?         @default(now())
+  updatedAt        DateTime?         @updatedAt
+
+  @@map("deliveryChargeMappingBase")
+}
+
+// Define a table to store order cost slabs for Order Cost Wise mapping
+model OrderCostSlab {
+  id             Int                       @id @default(autoincrement())
+  fromCost       Int
+  toCost         Int
+  deliveryCharge Int
+  mappingBaseId  Int
+  mappingBase    DeliveryChargeMappingBase @relation(fields: [mappingBaseId], references: [id])
+}
+
+// Define a table to store order volume slabs for Order Volume Wise mapping
+model OrderVolumeSlab {
+  id             Int                       @id @default(autoincrement())
+  fromWeight     Int
+  toWeight       Int
+  deliveryCharge Int
+  mappingBaseId  Int
+  mappingBase    DeliveryChargeMappingBase @relation(fields: [mappingBaseId], references: [id])
 }
 
 enum OrderStatus {

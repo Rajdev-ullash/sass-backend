@@ -16,6 +16,7 @@ export type OrderInput = {
   status: OrderStatus;
   totalAmount: number;
   orderItems: OrderItemInput[];
+  platformCharge: number;
 };
 
 export type OrderItemInput = {

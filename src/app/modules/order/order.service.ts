@@ -1,8 +1,6 @@
 import { OrderStatus, Prisma } from '@prisma/client';
-// import { OrderWhereInput, OrderStatus } from './order.interfaces';
-// Your service code here
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// Your service code for orders here
+
 import { Order } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
@@ -46,12 +44,15 @@ const insertIntoDB = async (data: OrderInput): Promise<Order> => {
     );
   }
 
+  const amount = expectedTotalAmount + data.platformCharge;
+
   // Create the order with calculated total
 
   const result = await prisma.order.create({
     data: {
       ...data,
-      totalAmount: expectedTotalAmount,
+      platformCharge: data.platformCharge,
+      totalAmount: amount,
       orderItems: {
         create: data.orderItems.map(item => ({
           quantity: item.quantity,
