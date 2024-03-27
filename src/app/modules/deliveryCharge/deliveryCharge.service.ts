@@ -120,6 +120,10 @@ const getByIdFromDB = async (
     where: {
       id,
     },
+    include: {
+      orderCostSlabs: true,
+      orderVolumeSlabs: true,
+    },
   });
   return result;
 };
