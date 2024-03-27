@@ -187,7 +187,7 @@ const updateOneInDB = async (
         data: {
           name: name,
           orderVolumeSlabs: {
-            create: orderVolumeSlabs.map(
+            update: orderVolumeSlabs.map(
               (slab: {
                 fromWeight: any;
                 toWeight: any;
