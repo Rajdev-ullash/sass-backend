@@ -171,6 +171,9 @@ const updateOneInDB = async (
             ),
           },
         },
+        include: {
+          orderCostSlabs: true,
+        },
       });
 
     return updatedMappingBaseWithSlabs;
@@ -196,6 +199,9 @@ const updateOneInDB = async (
               })
             ),
           },
+        },
+        include: {
+          orderVolumeSlabs: true,
         },
       });
 
