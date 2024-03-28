@@ -2,6 +2,8 @@
 // deliveryCharge.service.ts
 
 import { DeliveryChargeMappingBase, Prisma } from '@prisma/client';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -156,16 +158,28 @@ const updateOneInDB = async (
 
   // Check if it's an update with order cost slabs
   if (name === 'Cost' && orderCostSlabs) {
+    const data = await prisma.orderCostSlab.deleteMany({
+      where: {
+        mappingBaseId: id,
+      },
+    });
+    if (!data) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Order cost not found');
+    }
     const updatedMappingBaseWithSlabs =
       await prisma.deliveryChargeMappingBase.update({
-        where: { id },
+        where: { id }, // Provide the where argument with the id
         data: {
           name: name,
           orderCostSlabs: {
             create: orderCostSlabs.map(
-              (slab: { fromCost: any; toCost: any; deliveryCharge: any }) => ({
-                fromCost: slab.fromCost,
-                toCost: slab.toCost,
+              (slab: {
+                fromWeight: any;
+                toWeight: any;
+                deliveryCharge: any;
+              }) => ({
+                fromWeight: slab.fromWeight,
+                toWeight: slab.toWeight,
                 deliveryCharge: slab.deliveryCharge,
               })
             ),
@@ -175,19 +189,26 @@ const updateOneInDB = async (
           orderCostSlabs: true,
         },
       });
-
     return updatedMappingBaseWithSlabs;
   }
 
   // Check if it's an update with order volume slabs
   if (name === 'Weight' && orderVolumeSlabs) {
+    const data = await prisma.orderVolumeSlab.deleteMany({
+      where: {
+        mappingBaseId: id,
+      },
+    });
+    if (!data) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Order volume not found');
+    }
     const updatedMappingBaseWithSlabs =
       await prisma.deliveryChargeMappingBase.update({
-        where: { id },
+        where: { id }, // Provide the where argument with the id
         data: {
           name: name,
           orderVolumeSlabs: {
-            update: orderVolumeSlabs.map(
+            create: orderVolumeSlabs.map(
               (slab: {
                 fromWeight: any;
                 toWeight: any;
@@ -204,7 +225,6 @@ const updateOneInDB = async (
           orderVolumeSlabs: true,
         },
       });
-
     return updatedMappingBaseWithSlabs;
   }
 
@@ -215,11 +235,54 @@ const updateOneInDB = async (
 const deleteByIdFromDB = async (
   id: number
 ): Promise<DeliveryChargeMappingBase> => {
-  const result = await prisma.deliveryChargeMappingBase.delete({
-    where: {
-      id: id,
-    },
+  const result = await prisma.$transaction(async transactionClient => {
+    const mapping =
+      await transactionClient.deliveryChargeMappingBase.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+    if (!mapping) {
+      throw new ApiError(
+        httpStatus.NOT_FOUND,
+        'Unable to find delivery charge mapping'
+      );
+    }
+
+    let deleteResult;
+
+    if (mapping.name === 'Flat') {
+      deleteResult = await transactionClient.deliveryChargeMappingBase.delete({
+        where: {
+          id: id,
+        },
+      });
+    } else {
+      // Delete related slabs based on the type of mapping
+      const deleteSlabsResult = await (mapping.name === 'Weight'
+        ? transactionClient.orderVolumeSlab.deleteMany({
+            where: {
+              mappingBaseId: id,
+            },
+          })
+        : transactionClient.orderCostSlab.deleteMany({
+            where: {
+              mappingBaseId: id,
+            },
+          }));
+
+      // Delete the mapping itself
+      deleteResult = await transactionClient.deliveryChargeMappingBase.delete({
+        where: {
+          id: id,
+        },
+      });
+    }
+
+    return deleteResult;
   });
+
   return result;
 };
 
